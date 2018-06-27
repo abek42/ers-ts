@@ -1,0 +1,802 @@
+<!doctype html>
+
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width,user-scalable=no">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+<title>Pickadate.js</title>
+
+<link rel="stylesheet" href="include/default.css">
+<link rel="stylesheet" href="include/default.date.css">
+<link rel="stylesheet" href="include/ui-1.10.0/ui-lightness/jquery-ui-1.10.0.custom.min.css" type="text/css" />
+<link rel="stylesheet" href="include/jquery.ui.timepicker.css?v=0.3.3" type="text/css" />
+
+<style>
+body{
+	font-family:helvetica;
+	font-size:16px;
+	color: #0084a1;
+	border-color: #0084a1;
+}
+
+div#mon,div#wed, div#fri{
+    background: #09b8ab;
+}
+
+div#tue,div#thu, div#sat{
+    background: #00c7a4;
+	
+}
+
+div.shift{
+	border-radius:10px;
+	font-family: helvetica;
+	font-size: 16px;
+
+color: #0084a1;
+}
+
+.results{
+	color:#64647E;
+
+}
+
+div.day div.shift:nth-child(odd){
+	background:  	#1cd5db;
+}
+
+div.day div.shift:nth-child(even){
+	background:#5cdfe3;
+}
+
+div.day{
+ margin:5px;padding:5px;
+ border-radius:5px;
+ color:white;
+ font-weight:bold;
+}
+
+
+.timer, .datepicker{
+border: 2px solid #0084a1;
+color: #0084a1;
+cursor:pointer;
+
+border-radius: 5px;
+
+width: 75px;
+
+text-align: center;
+margin:3px 10px 3px 5px ;
+}
+span{
+	display:inline-block;
+	width:82px;
+	text-align:center;
+	color: #64647E;
+}
+
+fieldset{
+	border: 0px;
+	border-radius: 20px;
+	margin: 5px;
+}
+
+.more{
+	background-color:unset;
+}
+
+button{
+	border: 2px solid #0084a1;
+	color: #0084a1;
+	font-weight:bold;
+	font-size:16px;
+	border-radius: 5px;
+	background-color:white;
+	width: 35px;
+	text-align: center;
+	margin: 3px 10px 3px 5px;
+	cursor:pointer;
+}
+
+input[type=checkbox]{
+
+	font-weight:bold;
+	font-size:20px;
+	width: 20px;
+	cursor:pointer;
+}
+
+div.results{
+	padding: 0px 10px;
+}
+
+div#nl-days,div#nl-dates,div#ld-days,div#ld-dates{
+	font-weight:bold;
+	border:0px;
+}
+
+div.hdr, div.hdr2{
+	background:#F4F4F4;
+	border: 1px solid #64647E;
+	max-width: 589px;
+}
+
+div.hdr h5, div.hdr2 h5{
+	color:#64647E;
+	margin: 4px 0px;
+	padding-left:5px;
+}
+
+div#nonlead span, div#lead span{
+	border-right:1px solid #64647E;
+}
+
+div#nl-end span:first-child,
+div#nl-start span:first-child,
+div#nl-brk span:first-child,
+div#nl-hrs span:first-child,
+div#ld-end span:first-child,
+div#ld-start span:first-child,
+div#ld-brk span:first-child,
+div#ld-hrs span:first-child{
+	border-left:1px solid #64647E;
+}
+div#nl-dates span ,
+div#nl-days span,
+div#ld-dates span ,
+div#ld-days span {
+
+    border: 0px;
+    padding: 0px 1px;
+
+}
+
+#generate{
+	border: 2px solid #0084a1;
+	color: white;
+	font-weight:bold;
+	font-size:16px;
+	border-radius: 5px;
+	background-color:#0084a1;
+	width: 120px;
+	text-align: center;
+	margin: 3px 10px 3px 5px;
+	cursor:pointer;
+}
+
+</style>
+
+
+<body>
+	<section class="section" style="max-width: 600px;">
+	<h2>Time sheet Entry Helper</h2>
+		<form>
+			<h4><fieldset style="margin-bottom: -20px;">
+				<label for="input_01">Week starting on: </label><input
+					id="input_01"
+					class="datepicker"
+					name="date"
+					type="text"
+					
+					autofocuss><!--
+					value="14 August, 2014"
+					data-value="2014-08-08"-->
+			   
+				<!-- <button type="button">Disable all dates</button>
+				<input class="button" type="submit" value="open"> -->
+			</fieldset></h4>
+		</form>
+		
+		
+		<div id="container"></div>
+	<section>
+		<div id="mon" class="day">
+			<label id="mon-day">Monday</label><label id="mon-date"></label>
+			<label>Shifts</label>
+			<div id="mon-shift-01" class="shift">
+				<form>
+					<fieldset>
+						<label>Start</label><input type="text" class="timer" id="mon-shift-start-01" value="12:00 PM" />
+						<label>End</label><input type="text" class="timer" id="mon-shift-end-01" value="12:00 PM" >
+						<label>Break (during)</label><input type="text" class="timer" id="mon-shift-break-01" value="00:00" >
+						<label>Lead</label><input type="checkbox" id="mon-shift-lead-01">
+			
+					</fieldset>
+				</form>
+			</div>
+			<div id="mon-more" class="more">
+				<label>More shifts? </label><button text="+" id="mon-plus" >+</button>
+			</div>
+		</div>
+	</section>	
+	<section>
+		<div id="tue" class="day">
+			<label id="tue-day">Tuesday</label><label id="tue-date"></label>
+			<label>Shifts</label>
+			<div id="tue-shift-01" class="shift">
+				<form>
+					<fieldset>
+						<label>Start</label><input type="text" class="timer" id="tue-shift-start-01" value="12:00 PM" >
+						<label>End</label><input type="text" class="timer" id="tue-shift-end-01" value="12:00 PM" >
+						<label>Break (during)</label><input type="text" class="timer" id="tue-shift-break-01" value="00:00" >
+						<label>Lead</label><input type="checkbox" id="tue-shift-lead-01">
+			
+					</fieldset>
+				</form>
+			</div>
+			<div id="tue-more" class="more">
+				<label>More shifts? </label><button value="+" id="tue-plus" >+</button>
+			</div>
+		</div>
+	</section>	
+		<section>
+		<div id="wed" class="day">
+			<label id="wed-day">Wednesday</label><label id="wed-date"></label>
+			<label>Shifts</label>
+			<div id="wed-shift-01" class="shift">
+				<form>
+					<fieldset>
+						<label>Start</label><input type="text" class="timer" id="wed-shift-start-01" value="12:00 PM" >
+						<label>End</label><input type="text" class="timer" id="wed-shift-end-01" value="12:00 PM" >
+						<label>Break (during)</label><input type="text" class="timer" id="wed-shift-break-01" value="00:00" >
+						<label>Lead</label><input type="checkbox" id="wed-shift-lead-01">
+			
+					</fieldset>
+				</form>
+			</div>
+			<div id="wed-more" class="more">
+				<label>More shifts? </label><button value="+" id="wed-plus" >+</button>
+			</div>
+		</div>
+	</section>	
+		<section>
+		<div id="thu" class="day">
+			<label id="thu-day">Thursday</label><label id="thu-date"></label>
+			<label>Shifts</label>
+			<div id="thu-shift-01" class="shift">
+				<form>
+					<fieldset>
+						<label>Start</label><input type="text" class="timer" id="thu-shift-start-01" value="12:00 PM" >
+						<label>End</label><input type="text" class="timer" id="thu-shift-end-01" value="12:00 PM" >
+						<label>Break (during)</label><input type="text" class="timer" id="thu-shift-break-01" value="00:00" >
+						<label>Lead</label><input type="checkbox" id="thu-shift-lead-01">
+			
+					</fieldset>
+				</form>
+			</div>
+			<div id="thu-more" class="more">
+				<label>More shifts? </label><button value="+" id="thu-plus" >+</button>
+			</div>
+		</div>
+	</section>	
+		<section>
+		<div id="fri" class="day">
+			<label id="fri-day">Friday</label><label id="fri-date"></label>
+			<label>Shifts</label>
+			<div id="fri-shift-01" class="shift">
+				<form>
+					<fieldset>
+						<label>Start</label><input type="text" class="timer" id="fri-shift-start-01" value="12:00 PM" >
+						<label>End</label><input type="text" class="timer" id="fri-shift-end-01" value="12:00 PM" >
+						<label>Break (during)</label><input type="text" class="timer" id="fri-shift-break-01" value="00:00" >
+						<label>Lead</label><input type="checkbox" id="fri-shift-lead-01">			
+					</fieldset>
+				</form>
+			</div>
+			<div id="fri-more" class="more">
+				<label>More shifts? </label><button value="+" id="fri-plus" >+</button>
+			</div>
+		</div>
+	</section>	
+	<section>
+		<div id="sat" class="day">
+			<label id="sat-day">Saturday</label><label id="sat-date"></label>
+			<label>Shifts</label>
+			<div id="sat-shift-01" class="shift">
+				<form>
+					<fieldset>
+						<label>Start</label><input type="text" class="timer" id="sat-shift-start-01" value="12:00 PM" >
+						<label>End</label><input type="text" class="timer" id="sat-shift-end-01" value="12:00 PM" >
+						<label>Break (during)</label><input type="text" class="timer" id="sat-shift-break-01" value="00:00" >
+						<label>Lead</label><input type="checkbox" id="sat-shift-lead-01">
+			
+					</fieldset>
+				</form>
+			</div>
+			<div id="sat-more" class="more">
+				<label>More shifts? </label><button value="+" id="sat-plus" >+</button>
+			</div>
+		</div>
+	</section>	
+	<section>
+		<input type="button" onclick="createOps();" value="Generate" id="generate">
+		<div id="results" style="display:none">
+			<h4>Entries for the ERS timesheet pages</h4>
+			<div id="nonlead">
+				<h4 style="margin: 20px 0px -2px 0px;">Timesheet for non-lead shifts</h4>
+				<div id="nl-dates">
+					<span id="nl-mon">-</span><span id="nl-tue">-</span><span id="nl-wed">-</span>
+					<span id="nl-thu">-</span><span id="nl-fri">-</span><span id="nl-sat">-</span>
+					<span id="nl-sun">-</span>
+				</div>
+				<div id="nl-days">
+					<span class="nl-days">Mon</span><span class="nl-days">Tue</span><span class="nl-days">Wed</span>
+					<span class="nl-days">Thu</span><span class="nl-days">Fri</span><span class="nl-days">Sat</span>
+					<span class="nl-days">Sun</span>
+				</div>
+				<div class="hdr">
+					<h5>  Total Hours Worked Per Day (minus breaks) (Hourly):</h5>
+				</div>
+				<div id="nl-hrs">
+					<span id="nl-mon-hrs">0.0</span><span id="nl-tue-hrs">0.0</span><span id="nl-wed-hrs">0.0</span>
+					<span id="nl-thu-hrs">0.0</span><span id="nl-fri-hrs">0.0</span><span id="nl-sat-hrs">0.0</span>
+					<span id="nl-sun-hrs">0.0</span>
+				</div>
+				<div class="hdr2">
+					<h5>  Break</h5>
+				</div>
+				<div id="nl-brk">
+					<span id="nl-mon-brk">0.0</span><span id="nl-tue-brk">0.0</span><span id="nl-wed-brk">0.0</span>
+					<span id="nl-thu-brk">0.0</span><span id="nl-fri-brk">0.0</span><span id="nl-sat-brk">0.0</span>
+					<span id="nl-sun-brk">0.0</span>
+				</div>
+				<div class="hdr2">
+					<h5>  Start Time</h5>
+				</div>
+				<div id="nl-start">
+					<span id="nl-mon-start">0.0</span><span id="nl-tue-start">0.0</span><span id="nl-wed-start">0.0</span>
+					<span id="nl-thu-start">0.0</span><span id="nl-fri-start">0.0</span><span id="nl-sat-start">0.0</span>
+					<span id="nl-sun-start">0.0</span>
+				</div>
+				<div class="hdr2">
+					<h5>  End Time</h5>
+				</div>
+				<div id="nl-end">
+					<span id="nl-mon-end">0.0</span><span id="nl-tue-end">0.0</span><span id="nl-wed-end">0.0</span>
+					<span id="nl-thu-end">0.0</span><span id="nl-fri-end">0.0</span><span id="nl-sat-end">0.0</span>
+					<span id="nl-sun-end">0.0</span>
+				</div>
+				<div id="ld-close" style="min-height:1px;border-top:1px solid #64647E;max-width:591px;">
+				
+				</div>
+			</div>
+			<div id="lead">
+				<h4 style="margin: 20px 0px -2px 0px;">  Timesheet for lead-role shifts</h4>
+				<div id="ld-dates">
+					<span id="ld-mon">-</span><span id="ld-tue">-</span><span id="ld-wed">-</span>
+					<span id="ld-thu">-</span><span id="ld-fri">-</span><span id="ld-sat">-</span>
+					<span id="ld-sun">-</span>
+				</div>
+				<div id="ld-days">
+					<span class="ld-days">Mon</span><span class="ld-days">Tue</span><span class="ld-days">Wed</span>
+					<span class="ld-days">Thu</span><span class="ld-days">Fri</span><span class="ld-days">Sat</span>
+					<span class="ld-days">Sun</span>
+				</div>
+				<div class="hdr">
+					<h5>  Total Hours Worked Per Day (minus breaks) (Hourly):</h5>
+				</div>
+				<div id="ld-hrs">
+					<span id="ld-mon-hrs">0.0</span><span id="ld-tue-hrs">0.0</span><span id="ld-wed-hrs">0.0</span>
+					<span id="ld-thu-hrs">0.0</span><span id="ld-fri-hrs">0.0</span><span id="ld-sat-hrs">0.0</span>
+					<span id="ld-sun-hrs">0.0</span>
+				</div>				
+				<div class="hdr2">
+					<h5>  Break</h5>
+				</div>
+				<div id="ld-brk">
+					<span id="ld-mon-brk">0.0</span><span id="ld-tue-brk">0.0</span><span id="ld-wed-brk">0.0</span>
+					<span id="ld-thu-brk">0.0</span><span id="ld-fri-brk">0.0</span><span id="ld-sat-brk">0.0</span>
+					<span id="ld-sun-brk">0.0</span>
+				</div>
+				<div class="hdr2">
+					<h5>  Start Time</h5>
+				</div>
+				<div id="ld-start">
+					<span id="ld-mon-start">0.0</span><span id="ld-tue-start">0.0</span><span id="ld-wed-start">0.0</span>
+					<span id="ld-thu-start">0.0</span><span id="ld-fri-start">0.0</span><span id="ld-sat-start">0.0</span>
+					<span id="ld-sun-start">0.0</span>
+				</div>
+				<div class="hdr2">
+					<h5>  End Time</h5>
+				</div>
+				<div id="ld-end">
+					<span id="ld-mon-end">0.0</span><span id="ld-tue-end">0.0</span><span id="ld-wed-end">0.0</span>
+					<span id="ld-thu-end">0.0</span><span id="ld-fri-end">0.0</span><span id="ld-sat-end">0.0</span>
+					<span id="ld-sun-end">0.0</span>
+				</div>
+				<div id="ld-close" style="min-height:1px;border-top:1px solid #64647E;max-width:591px;">
+				
+				</div>
+			</div>
+			<div id="blank" style="min-height:125px;min-width:125px;">
+			</div>
+		</div>
+	</section>
+	</section>
+
+
+	<script src="include/jquery.2.0.0.js"></script>
+	<script src="include/picker.js"></script>
+	<script src="include/picker.date.js"></script>
+	<script src="include/legacy.js"></script>
+	
+    <script type="text/javascript" src="include/ui-1.10.0/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="include/ui-1.10.0/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="include/ui-1.10.0/jquery.ui.tabs.min.js"></script>
+    <script type="text/javascript" src="include/ui-1.10.0/jquery.ui.position.min.js"></script>
+
+    <script type="text/javascript" src="include/jquery.ui.timepicker.js?v=0.3.3"></script>
+
+
+	<script type="text/javascript">
+
+		var $input = $( '.datepicker' ).pickadate({
+			formatSubmit: 'yyyy/mm/dd',
+			// min: [2015, 7, 14],
+			container: '#container',
+			// editable: true,
+			closeOnSelect: true,
+			closeOnClear: false,
+			// First day of the week
+			firstDay: 1,
+			disable:[7],
+			
+			format: "yyyy/mm/dd",
+
+			// Date limits
+			min: new Date(2018,6,30),
+			max: new Date(2018,8,2),
+			weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+			showsatthsShort: true,
+			onSet: function(context) {
+				console.log('Just set stuff:', context);
+				processWeekSelect(context.select);
+		  }
+		})
+
+		var picker = $input.pickadate('picker');
+		
+		
+		var daysOfWeek = ['mon','tue','wed','thu','fri','sat'];
+		for(var iday=0;iday<6;iday++){
+			//console.log("Registering: ",iday,daysOfWeek[iday]);
+			registerCallBack(daysOfWeek[iday]+'-shift-start-01');
+			registerCallBack(daysOfWeek[iday]+'-shift-end-01'  );	
+			registerBreaks(daysOfWeek[iday]  +'-shift-break-01');
+		}
+		
+		setButtonListners();
+		// picker.set('select', '14 October, 2014')
+		// picker.open()
+
+		// $('button').on('click', function() {
+		//	 picker.set('disable', true);
+		// });
+		
+		function processWeekSelect(dateInt){
+			var wkStart = new Date(dateInt);
+			console.log("Pre:",wkStart.getDate(), wkStart.getDay(), wkStart.getMonth());
+			if(wkStart.getDay()!=1){//not satday
+				wkStart.setDate(wkStart.getDate()-wkStart.getDay()+1);
+			}
+			console.log("Post:",wkStart.getDate(), wkStart.getDay(), wkStart.getMonth());
+		}
+		
+		function registerCallBack(id){
+			$("#"+id).timepicker({
+				showPeriod: true,
+				onHourShow: OnHourShowCallback,
+				onMinuteShow: OnMinuteShowCallback,
+				onClose: function(time, inst) {
+					console.log('onClose triggered with time : ' + time + ' for instance id : ' + inst.id);
+				},
+				onSelect: function(time, inst) {
+					console.log('onSelect triggered with time : ' + time + ' for instance id : ' + inst.id);
+				}
+			});
+		}
+		
+		function registerBreaks(id){
+			//console.log("DBG: registerBreaks for",id,$("#"+id));
+			$("#"+id).timepicker({
+				showPeriod: false,
+				onHourShow: OnHourShowCallback2,
+				onMinuteShow: OnMinuteShowCallback2
+			});
+		}
+		
+		function OnHourShowCallback(hour) {
+			if ((hour > 19) || (hour < 8)) {
+				return false; // not valid
+			}
+			return true; // valid
+		}
+		function OnMinuteShowCallback(hour, minute) {
+			if ((hour == 19) && (minute >= 0)) { return false; } // not valid
+			if ((hour == 7) && (minute < 45)) { return false; }   // not valid
+			return true;  // valid
+		}
+		
+		function OnHourShowCallback2(hour) {
+			if ((hour > 5)) {
+				return false; // not valid
+			}
+			return true; // valid
+		}
+		function OnMinuteShowCallback2(hour, minute) {
+			if ((hour == 5) && (minute >= 0)) { return false; } // not valid
+			return true;  // valid
+		}
+		
+		function setButtonListners(){//sets listeners for all basic buttons, not dynamic ones
+			
+			var bns = document.getElementsByTagName("button");
+			console.log("DBG: setButtonListners", bns.length);
+			for (i = 0; i < bns.length; i++) {
+				bns[i].addEventListener("click", function(evt) {
+					console.log("INFO: Btn click",evt.target.id);
+					processBtnEvent(evt.target.id);
+				});
+			}	
+		}   
+		
+		function processBtnEvent(id){		
+			console.log(id);
+			var chip = id.split("-")[0];
+			var divs = document.getElementById(chip).getElementsByTagName("div");
+			console.log(divs.length);
+			var nextAssignment = divs.length;
+			var node = document.getElementById(chip+"-shift-01").cloneNode(true);
+			var elements = node.getElementsByTagName("input");
+			var moreNode = document.getElementById(chip+"-more");
+			moreNode.parentNode.insertBefore(node, moreNode);
+			for(var inp=0;inp<elements.length;inp++){
+				var inpu = elements[inp].id.split("-");
+				inpu.splice(inpu.length-1,1);
+				elements[inp].id = inpu.join("-")+"-"+(inp<10?"0":"")+nextAssignment;
+				if(elements[inp].id.indexOf("break")>0){//
+					console.log("DBG: processBtnEvent>break",elements[inp].id);
+					elements[inp].classList.remove("hasTimepicker");
+					registerBreaks(elements[inp].id);
+				}
+				else{
+					if(elements[inp].id.indexOf("lead")<0){
+						console.log("DBG: processBtnEvent>standard",elements[inp].id);
+						elements[inp].classList.remove("hasTimepicker");
+						registerCallBack(elements[inp].id);
+					}
+				}				
+			}
+			
+		}
+		
+		function createOps(){
+			var weekData=[];
+			for(var idd=0;idd<daysOfWeek.length;idd++){
+//				console.log("DBG: createOps", daysOfWeek[idd]);
+				weekData.push(processDay(daysOfWeek[idd],idd));
+			}
+			displayOps(weekData);
+		}
+		
+		function displayOps(wk){
+			document.getElementById("results").style.display="block";
+			var dtStart = getWeekStart();
+			/*
+			var dayData = { dayOfWeek:day,
+							minNL:null, maxNL:null, minL:null,maxL:null,
+							brkNL:0, workedNL:0, 	brkL:0, workedL:0,
+							hasNL:false,			hasL:false
+						  };
+			*/
+			var showL=false;
+			var showNL = false;
+			for(var idx=0;ix<daysOfWeek.length;ix++){
+			//zero out everything
+				var ld = "ld-"+dd.dayOfWeek;
+				var nld = "nl-"+dd.dayOfWeek;
+					document.getElementById(ld).innerHTML = "-";
+					document.getElementById(ld).style = "background-color:unset";
+					document.getElementById(ld+"-hrs").innerHTML = 0.0;
+					document.getElementById(ld+"-brk").innerHTML = 0.0;
+					document.getElementById(ld+"-start").innerHTML = "00:00";
+					document.getElementById(ld+"-end").innerHTML = "00:00";
+				
+					document.getElementById(nld).innerHTML = "-";
+					document.getElementById(nld).style = "background-color:unset";
+					document.getElementById(nld+"-hrs").innerHTML = 0.0;
+					document.getElementById(nld+"-brk").innerHTML = 0.0;
+					document.getElementById(nld+"-start").innerHTML = "00:00";
+					document.getElementById(nld+"-end").innerHTML = "00:00";			
+			}
+			
+			for(var ix=0;ix<wk.length;ix++){
+				var dd = wk[ix];
+				var ld = "ld-"+dd.dayOfWeek;
+				var nld = "nl-"+dd.dayOfWeek;
+				//console.log(dd.dayOfWeek,dd);
+				if(dd.hasL){
+					document.getElementById(ld).innerHTML = getDateStr(getOffsetDate(dtStart,dd.idx));
+					document.getElementById(ld+"-hrs").innerHTML = (dd.workedL/3600000).toFixed(2);
+					document.getElementById(ld+"-brk").innerHTML = (dd.brkL/3600000).toFixed(2);
+					document.getElementById(ld+"-start").innerHTML = getHourStr(dd.minL);
+					document.getElementById(ld+"-end").innerHTML = getHourStr(dd.maxL);
+				}
+				if(dd.hasNL){
+					document.getElementById(nld).innerHTML = getDateStr(getOffsetDate(dtStart,dd.idx));
+					document.getElementById(nld+"-hrs").innerHTML = (dd.workedNL/3600000).toFixed(2);
+					document.getElementById(nld+"-brk").innerHTML = (dd.brkNL/3600000).toFixed(2);
+					document.getElementById(nld+"-start").innerHTML = getHourStr(dd.minNL);
+					document.getElementById(nld+"-end").innerHTML = getHourStr(dd.maxNL);
+				}
+				showL |= dd.hasL;
+				showNL |= dd.hasNL;
+				if(dd.error){
+					document.getElementById(nld).style="background-color:red";
+					document.getElementById(ld).style="background-color:red";
+				}
+			}
+			document.getElementById("lead").style.display=showL?"block":"none";
+			document.getElementById("nonlead").style.display=showNL?"block":"none";
+			document.getElementById("results").scrollIntoView();
+		}
+		
+		function getDateStr(dt){
+			return (dt.getDate()<10?"0":"")+dt.getDate()+"/"+(dt.getMonth()<10?"0":"")+dt.getMonth();
+		}
+		
+		function getHourStr(dt){
+			return addZero(dt.getHours())+":"+addZero(dt.getMinutes());
+		}
+		
+		function getOffsetDate(dt,offset){
+			var dt2 = new Date();
+			dt2.setDate(dt.getDate()+offset);
+			//console.log("DBG: getOffsetDate",dt.getDate(),"+",offset,dt2.getDate());
+			return dt2;
+		}
+		
+		function addZero(val){
+			return ((val<10)?"0":"")+val;
+		}
+		
+		function processDay(day,offset){
+			var dayShifts=[];
+			var timeStart, timeEnd, timeBreak,leadFlag;
+			var dayHnd = document.getElementById(day).getElementsByTagName("input");
+			
+			for(var idday=1;idday<dayHnd.length/4+1;idday++){
+//				console.log("DBG: processDay",day,document.getElementById(day+"-shift-lead-0" +idday).checked);
+				timeStart = document.getElementById(day+"-shift-start-0"+idday).value;
+				timeEnd   = document.getElementById(day+"-shift-end-0"  +idday).value;
+				timeBreak = document.getElementById(day+"-shift-break-0"+idday).value;
+				leadFlag  = document.getElementById(day+"-shift-lead-0" +idday).checked;
+				if(timeStart!=timeEnd){
+					dayShifts.push(getShift(timeStart,timeEnd,timeBreak,leadFlag,offset));				
+					var shift = dayShifts[dayShifts.length-1];
+					if(shift.swap){//the end time isearlier than start
+						document.getElementById(day+"-shift-start-0"+idday).value=timeEnd;
+						document.getElementById(day+"-shift-end-0"+idday).value=timeStart;
+						dayShifts[dayShifts.length-1].swap = false; //swap is complete
+					}
+					console.log("DBG:processDay",shift);
+				}
+			}//now we have the dayshifts for the single day
+			var dayData = { dayOfWeek:day, idx:offset,
+							minNL:null, maxNL:null, minL:null,maxL:null,
+							brkNL:0, workedNL:0, 	brkL:0, workedL:0,
+							hasNL:false,			hasL:false
+						  };
+			
+			for(var i=0;i<dayShifts.length;i++){
+				var shift = dayShifts[i];
+				if(shift.isLead){
+					dayData.hasL = true;
+					//console.log("DBG: >>>>",shift,dayData.maxL==null,(dayData.maxL<shift.timeEnd));
+					if(dayData.minL==null||(dayData.minL>shift.timeStart)){
+						dayData.minL = shift.timeStart;
+					}
+					if(dayData.maxL==null||(dayData.maxL<shift.timeEnd)){
+						dayData.maxL = shift.timeEnd;
+					}
+					var shiftBrk = (shift.timeBreak-shift.timeD);
+					dayData.workedL += (shift.timeEnd-shift.timeStart-shiftBrk); //this is in millis
+					dayData.brkL +=shiftBrk;
+				}
+				else{
+					dayData.hasNL = true;					
+					if(dayData.minNL==null||(dayData.minNL>shift.timeStart)){
+						dayData.minNL = shift.timeStart;
+					}
+					if(dayData.maxNL==null||(dayData.maxNL<shift.timeEnd)){
+						dayData.maxNL = shift.timeEnd;
+					}
+					var shiftBrk = (shift.timeBreak-shift.timeD);
+					dayData.workedNL += (shift.timeEnd-shift.timeStart-shiftBrk); //this is in millis
+					dayData.brkNL +=shiftBrk;
+				}
+			}//all shifts for that day processed
+			
+			//sanity checks
+			if(dayData.hasNL){//non-lead work
+				var totalNL = dayData.maxNL-dayData.minNL;
+				
+				//totalNL should be greater than the sum of workedNL and brkNL
+				if(totalNL<(dayData.workedNL+dayData.brkNL)){
+					//something is wrong
+					alert("Check shift data for "+dayData.dayOfWeek.toUpperCase());
+					dayData.error=true;
+				}
+				else{
+					if(totalNL>(dayData.workedNL+dayData.brkNL)){//more than one shift, need to increase brk time to account for down-time between shifts
+						dayData.brkNL +=(totalNL-dayData.workedNL);
+					}//else the numbers square up					
+				}
+			}
+			if(dayData.hasL){//lead work
+				var totalL = dayData.maxL-dayData.minL;
+				console.log("DBG processDay----- >>>>", dayData.maxL-dayData.minL, dayData.workedL,dayData.brkL);
+				//totalL should be greater than the sum of workedL and brkL
+				if(totalL<(dayData.workedL+dayData.brkL)){
+					//something is wrong
+					alert("Check shift data for "+dayData.dayOfWeek.toUpperCase());
+					dayData.error=true;
+				}
+				else{
+					if(totalL>(dayData.workedL+dayData.brkL)){//more than one shift, need to increase brk time to account for down-time between shifts
+						dayData.brkL +=(totalL-dayData.workedL);
+					}//else the numbers square up					
+				}
+			}
+			return dayData;
+			//console.log(dayHnd.filter(tag, tag.id.indexOf("01")>0));				
+		}//end function
+		
+		function getShift(ts,te,tb,lf,offset){
+			var dtStart = getWeekStart();
+			var swap=false;
+			//shift is on day: wkstart+offset
+			dtStart.setDate(dtStart.getDate()+offset);
+			var tmTS = new Date(dtStart.getFullYear()+"/0"+(dtStart.getMonth()+1)+"/"+dtStart.getDate()+" "+ts);
+			var tmTE = new Date(dtStart.getFullYear()+"/0"+(dtStart.getMonth()+1)+"/"+dtStart.getDate()+" "+te);
+			var tmTB = new Date(dtStart.getFullYear()+"/0"+(dtStart.getMonth()+1)+"/"+dtStart.getDate()+" "+tb);
+			var tmD =  new Date(dtStart.getFullYear()+"/0"+(dtStart.getMonth()+1)+"/"+dtStart.getDate()+" 12:00 AM");
+			if(tmTE<tmTS){//end before start...
+				swap=true;
+				console.log("DBG: getShift",tmTS-tmTE, tmTB-tmD);
+			}
+			else{
+//				console.log("DBG: getShift",tmTE-tmTS, tmTB-tmD);
+			}
+			
+			//console.log("DBG: getShift->>>>>>>>>>",lf?"Lead":"Not-Lead",offset,getHourStr(tmTS),getHourStr(tmTE));
+			return {timeStart:swap?tmTE:tmTS, timeEnd:swap?tmTS:tmTE, timeBreak:tmTB, isLead:lf, swapStartEnd:swap, timeD:tmD};
+		}
+		
+		function getWeekStart(){
+			var dtInput = document.getElementById("input_01").value;
+			var dtStart=new Date();
+			if(dtInput.length>0){
+				dtStart = new Date(dtInput);
+			}
+			
+			if(dtStart.getDay()!=1){//not satday
+				dtStart.setDate(dtStart.getDate()-dtStart.getDay()+1);
+			}
+			if(dtInput.length==0){
+				document.getElementById("input_01").value = dtStart.getFullYear()+"/"+addZero(dtStart.getMonth()+1)+"/"+addZero(dtStart.getDate());
+			}
+			return dtStart;
+		}
+
+	</script>
+
+
+</body>
+
+
+
